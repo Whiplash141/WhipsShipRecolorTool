@@ -17,7 +17,7 @@ namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.0.5";
+        const string myVersionString = "0.0.0.6";
         const string buildDateString = "2/9/18";
         const string githubVersionUrl = "http://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
@@ -160,11 +160,10 @@ namespace WhipsShipRecolorTool
 
             public string ToMaskString()
             {
-                var x = X.ToString(CultureInfo.InvariantCulture);
-                var y = Y.ToString(CultureInfo.InvariantCulture);
-                var z = Z.ToString(CultureInfo.InvariantCulture);
-                var maskString = $"<ColorMaskHSV x=\"{x}\" y=\"{y}\" z=\"{z}\" />";
-                return maskString.Replace(",",".");
+                var format = new NumberFormatInfo();
+                format.NumberDecimalSeparator = ".";
+
+                return $"<ColorMaskHSV x=\"{X.ToString(format)}\" y=\"{Y.ToString(format)}\" z=\"{Z.ToString(format)}\" />";
             }
 
             public string HSVToString()
@@ -363,7 +362,11 @@ namespace WhipsShipRecolorTool
                     return new ColorVector(0, 0, 0);
 
                 float h = 0, s = 0, v = 0;
-                if (!float.TryParse(maskSplit[1], out h) || !float.TryParse(maskSplit[3], out s) || !float.TryParse(maskSplit[5], out v))
+
+                var format = new NumberFormatInfo();
+                format.NumberDecimalSeparator = ".";
+
+                if (!float.TryParse(maskSplit[1], NumberStyles.Number, format, out h) || !float.TryParse(maskSplit[3], NumberStyles.Number, format, out s) || !float.TryParse(maskSplit[5], NumberStyles.Number, format, out v))
                     return new ColorVector(0, 0, 0);
 
                 ColorVector hsvMask = new ColorVector(h, s, v);
