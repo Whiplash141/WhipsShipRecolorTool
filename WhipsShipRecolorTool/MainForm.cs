@@ -9,32 +9,118 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Net;
+using System.Net.Http;
 
 namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
+        const string myVersionString = "0.0.0.2";
+        const string buildDateString = "2/9/18";
+        const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
+
+        string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
+
         string filepath = "";
+        string originalText = "";
+        string text = "";
+        string maskToReplace = "";
+
         const string fileExtension = ".sbc";
         const string fileName = "bp";
         const string fileNameBackup = "bp_backup";
         const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*.?[0-9]*?\"( *?)y=\"-?[0-9]*.?[0-9]*?\"( *?)z=\"-?[0-9]*.?[0-9]*?\"( *?)/>";
+
         Color replacementColor = Color.Black;
 
         Dictionary<string, ColorVector> uniqueColors = new Dictionary<string, ColorVector>();
 
-        string originalText = "";
-        string text = "";
-
-        string maskToReplace = "";
         ColorVector hsvVectorToReplace = new ColorVector(0,0,0);
 
         public MainForm()
         {
             InitializeComponent();
 
+            //Set file filter
             openFileDialog1.Filter = "Blueprint Files (*.sbc) | *.sbc";
+
+            //Set initial file directory
+            var appDataLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            if (!string.IsNullOrWhiteSpace(appDataLocation))
+            {
+                var desiredDirectory = appDataLocation + @"\SpaceEngineers\Blueprints\local";
+                if (Directory.Exists(desiredDirectory))
+                    openFileDialog1.InitialDirectory = desiredDirectory;
+            }
+
+
+            //Set form name
+            this.Text = formTitle;
+
+            //Check for any new updates
+            StartUpdateBackgroundWorker();
         }
+
+        #region Update Checking
+        void StartUpdateBackgroundWorker()
+        {
+            if (!backgroundWorkerUpdate.IsBusy)
+            {
+                backgroundWorkerUpdate.RunWorkerAsync();
+            }
+        }
+
+        private void backgroundWorkerUpdate_DoWork(object sender, DoWorkEventArgs e)
+        {
+            CheckForUpdates();
+        }
+
+        private void backgroundWorkerUpdate_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (closeForm)
+                this.Close();
+        }
+
+        bool closeForm = false;
+
+        void CheckForUpdates()
+        {
+            var webRequest = (HttpWebRequest)WebRequest.Create(githubVersionUrl);
+            webRequest.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+            webRequest.AllowAutoRedirect = true;
+            HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+
+            var latestVersionUrl = webResponse.ResponseUri.ToString();
+            var urlSplit = latestVersionUrl.Split('/');
+            if (urlSplit.Length < 1)
+                return;
+
+            var latestVersionString = urlSplit[urlSplit.Length - 1];
+            latestVersionString = latestVersionString.ToUpperInvariant().Replace("V", "");
+
+            Version latestVersion = new Version();
+            if (!Version.TryParse(latestVersionString, out latestVersion))
+                return;
+
+            Version myVersion = new Version();
+            if (!Version.TryParse(myVersionString, out myVersion))
+                return;
+
+            if (latestVersion > myVersion)
+            {
+                var confirmResult = MessageBox.Show($"Old version detected. Update to newest version?\nYour version: {myVersionString}\nLatest release: {latestVersionString}",
+                    "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    System.Diagnostics.Process.Start(githubVersionUrl);
+                    closeForm = true;
+                    //this.Close();
+                }
+            }
+        }
+        #endregion
 
         public struct ColorVector
         {

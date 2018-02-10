@@ -31,6 +31,7 @@ namespace WhipsShipRecolorTool
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.textBoxFilePath = new System.Windows.Forms.TextBox();
             this.buttonBrowse = new System.Windows.Forms.Button();
@@ -56,6 +57,7 @@ namespace WhipsShipRecolorTool
             this.checkBoxShowRGB = new System.Windows.Forms.CheckBox();
             this.buttonAddColor = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.backgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxColorPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSaturation)).BeginInit();
@@ -326,6 +328,11 @@ namespace WhipsShipRecolorTool
             this.buttonAddColor.UseVisualStyleBackColor = true;
             this.buttonAddColor.Click += new System.EventHandler(this.buttonAddColor_Click);
             // 
+            // backgroundWorkerUpdate
+            // 
+            this.backgroundWorkerUpdate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerUpdate_DoWork);
+            this.backgroundWorkerUpdate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerUpdate_RunWorkerCompleted);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -347,8 +354,10 @@ namespace WhipsShipRecolorTool
             this.Controls.Add(this.textBoxFilePath);
             this.Controls.Add(this.groupBoxHSV);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Whip\'s Blueprint Recolor Tool";
+            this.Text = "Whip\'s Ship Recolor Tool";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxColorPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSaturation)).EndInit();
@@ -387,6 +396,7 @@ namespace WhipsShipRecolorTool
         private System.Windows.Forms.CheckBox checkBoxShowRGB;
         private System.Windows.Forms.Button buttonAddColor;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerUpdate;
     }
 }
 
