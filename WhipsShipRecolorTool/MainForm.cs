@@ -11,12 +11,13 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Globalization;
 
 namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.0.3";
+        const string myVersionString = "0.0.0.4";
         const string buildDateString = "2/9/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
@@ -159,7 +160,7 @@ namespace WhipsShipRecolorTool
 
             public string ToMaskString()
             {
-                return $"<ColorMaskHSV x=\"{X}\" y=\"{Y}\" z=\"{Z}\" />";
+                return $"<ColorMaskHSV x=\"{X.ToString(new CultureInfo("en-US"))}\" y=\"{Y.ToString(new CultureInfo("en-US"))}\" z=\"{Z.ToString(new CultureInfo("en-US"))}\" />";
             }
 
             public string HSVToString()
@@ -296,7 +297,7 @@ namespace WhipsShipRecolorTool
                 int red = (int)Math.Round(X);
                 int green = (int)Math.Round(Y);
                 int blue = (int)Math.Round(Z);
-                return Color.FromArgb(red, green, blue);
+                return Color.FromArgb(255, red, green, blue);
             }
 
             private static float Max(float[] nums)
@@ -506,7 +507,12 @@ namespace WhipsShipRecolorTool
 
             var colorToReplace = hsvVectorToReplace.HSVToRGB().RGBToColor();
             replacementColor = colorToReplace; //default to the same to avoid issues
+
+            textBoxOutput.Text += $"r\n> hsv {hsvVectorToReplace}\r\nrgb {hsvVectorToReplace.HSVToRGB()}";
+
             pictureBoxColorPreview.BackColor = colorToReplace;
+
+            textBoxOutput.Text += $"r\ncolor {colorToReplace}";
 
             numericUpDownHue.Value = (decimal)hsvVectorToReplace.X;
             numericUpDownSaturation.Value = (decimal)hsvVectorToReplace.Y;
