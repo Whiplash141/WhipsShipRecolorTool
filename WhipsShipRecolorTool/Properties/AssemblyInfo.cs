@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WhipsShipRecolorTool")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Whip's Ship Recolor Tool")]
+[assembly: AssemblyDescription("An application for mass recoloring of Space Engineers ship blueprints")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WhipsShipRecolorTool")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyProduct("Whip's Blueprint Recolor Tool")]
+[assembly: AssemblyCopyright("Copyright Whiplash141 ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
