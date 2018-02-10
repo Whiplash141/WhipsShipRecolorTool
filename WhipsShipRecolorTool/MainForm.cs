@@ -16,7 +16,7 @@ namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.0.2";
+        const string myVersionString = "0.0.0.3";
         const string buildDateString = "2/9/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
