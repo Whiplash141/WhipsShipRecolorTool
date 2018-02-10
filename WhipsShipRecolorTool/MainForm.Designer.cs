@@ -157,19 +157,20 @@ namespace WhipsShipRecolorTool
             // 
             // textBoxOutput
             // 
-            this.textBoxOutput.Location = new System.Drawing.Point(30, 396);
+            this.textBoxOutput.Location = new System.Drawing.Point(30, 375);
             this.textBoxOutput.Multiline = true;
             this.textBoxOutput.Name = "textBoxOutput";
             this.textBoxOutput.ReadOnly = true;
             this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxOutput.Size = new System.Drawing.Size(624, 73);
+            this.textBoxOutput.Size = new System.Drawing.Size(624, 129);
             this.textBoxOutput.TabIndex = 10;
+            this.textBoxOutput.UseWaitCursor = true;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(25, 368);
+            this.label3.Location = new System.Drawing.Point(25, 347);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(161, 25);
             this.label3.TabIndex = 11;
@@ -337,7 +338,7 @@ namespace WhipsShipRecolorTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(679, 481);
+            this.ClientSize = new System.Drawing.Size(679, 516);
             this.Controls.Add(this.buttonAddColor);
             this.Controls.Add(this.checkBoxShowRGB);
             this.Controls.Add(this.label2);

@@ -17,7 +17,7 @@ namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.0.7";
+        const string myVersionString = "0.0.0.8";
         const string buildDateString = "2/10/18";
         const string githubVersionUrl = "http://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
@@ -388,7 +388,7 @@ namespace WhipsShipRecolorTool
         {
             //Load file
             originalText = File.ReadAllText(filepath);
-            textBoxOutput.Text = "File loaded successfully!";
+            textBoxOutput.Text = ("File loaded successfully!");
 
             text = originalText;
 
@@ -409,8 +409,8 @@ namespace WhipsShipRecolorTool
             int count = 0;
             uniqueColors.Clear();
 
-            textBoxOutput.Text += ($"-----------------------------------------\r\n");
-            textBoxOutput.Text += "Getting unique colors\r\n";
+            textBoxOutput.AppendText("-----------------------------------------\r\n");
+            textBoxOutput.AppendText("Getting unique colors\r\n");
 
             foreach (var match in matches)
             {
@@ -422,12 +422,12 @@ namespace WhipsShipRecolorTool
 
             foreach (var kvp in uniqueColors)
             {
-                textBoxOutput.Text += $"mask: {kvp.Key}\r\n";
-                textBoxOutput.Text += $"hsv: {ColorVector.HSVFromMaskString(kvp.Key)}\r\n";
+                textBoxOutput.AppendText($"mask: {kvp.Key}\r\n");
+                textBoxOutput.AppendText($"hsv: {ColorVector.HSVFromMaskString(kvp.Key)}\r\n");
             }
 
-            textBoxOutput.Text += ($"Regex matches: {count}\r\n");
-            textBoxOutput.Text += ($"Unique regex matches: {uniqueColors.Count}\r\n");
+            textBoxOutput.AppendText(($"Regex matches: {count}\r\n"));
+            textBoxOutput.AppendText($"Unique regex matches: {uniqueColors.Count}\r\n");
         }
 
         List<string> displayStrings = new List<string>();
@@ -455,13 +455,13 @@ namespace WhipsShipRecolorTool
         void ReplaceColor()
         {
             listBoxColors.ClearSelected();
-            textBoxOutput.Text += $"Replacing color\r\n";
+            textBoxOutput.AppendText($"Replacing color\r\n");
             var rgb = ColorVector.FromColor(replacementColor);
-            textBoxOutput.Text += $"RGB: {rgb}\r\n";
+            textBoxOutput.AppendText($"RGB: {rgb}\r\n");
             var hsv = rgb.RGBToHSV().Round();
-            textBoxOutput.Text += $"HSV: {hsv}\r\n";
+            textBoxOutput.AppendText($"HSV: {hsv}\r\n");
             var hsvMask = hsv.HSVToColorMask().ToMaskString();
-            textBoxOutput.Text += $"mask: {hsvMask}\r\n";
+            textBoxOutput.AppendText($"mask: {hsvMask}\r\n");
 
             text = text.Replace(maskToReplace, hsvMask);
 
@@ -471,7 +471,7 @@ namespace WhipsShipRecolorTool
 
         private void buttonBrowse_Click(object sender, EventArgs e)
         {
-            textBoxOutput.Text += "Browse for file\r\n";
+            textBoxOutput.AppendText("Browse for file\r\n");
             openFileDialog1.ShowDialog();
         }
 
@@ -485,7 +485,7 @@ namespace WhipsShipRecolorTool
 
         void ShowColorPicker()
         {
-            textBoxOutput.Text += "Color picker opened\r\n";
+            textBoxOutput.AppendText("Color picker opened\r\n");
 
             var customColors = customColorList.ToArray();
             colorDialog1.CustomColors = customColors;
@@ -502,13 +502,12 @@ namespace WhipsShipRecolorTool
                 numericUpDownHue.Value = (decimal)hsv.X;
                 numericUpDownSaturation.Value = (decimal)hsv.Y;
                 numericUpDownValue.Value = (decimal)hsv.Z;
-                textBoxOutput.Text += "";
             }
 
             customColors = colorDialog1.CustomColors;
             var newCustomColors = new List<int>(customColors);
             newCustomColors.RemoveAll(x => x == 16777215);
-            textBoxOutput.Text += $"Custom colors: {newCustomColors.Count}\r\n";
+            textBoxOutput.AppendText($"Custom colors: {newCustomColors.Count}\r\n");
 
             customColorList = newCustomColors;
         }
@@ -532,13 +531,13 @@ namespace WhipsShipRecolorTool
             var colorToReplace = hsvVectorToReplace.HSVToRGB().RGBToColor();
             replacementColor = colorToReplace; //default to the same to avoid issues
 
-            textBoxOutput.Text += "Color index changed\r\n";
+            textBoxOutput.AppendText("Color index changed\r\n");
 
-            textBoxOutput.Text += $"hsv {hsvVectorToReplace}\r\nrgb {hsvVectorToReplace.HSVToRGB()}\r\n";
+            textBoxOutput.AppendText($"hsv {hsvVectorToReplace}\r\nrgb {hsvVectorToReplace.HSVToRGB()}\r\n");
 
             pictureBoxColorPreview.BackColor = colorToReplace;
 
-            textBoxOutput.Text += $"color {colorToReplace}\r\n";
+            textBoxOutput.AppendText($"color {colorToReplace}\r\n");
 
             numericUpDownHue.Value = (decimal)hsvVectorToReplace.X;
             numericUpDownSaturation.Value = (decimal)hsvVectorToReplace.Y;
@@ -557,18 +556,18 @@ namespace WhipsShipRecolorTool
         {
             //Backup file
             File.WriteAllText(filepath.Replace(fileName, fileNameBackup), originalText);
-            textBoxOutput.Text += "Backup created\r\n";
+            textBoxOutput.AppendText("Backup created\r\n");
 
             //Write new file
             File.WriteAllText(filepath, text);
-            textBoxOutput.Text += "Changes saved\r\n";
+            textBoxOutput.AppendText("Changes saved\r\n");
 
             //Delete sbcPB file
             var precompiledSbcPath = filepath + "PB";
             if (File.Exists(precompiledSbcPath))
             {
                 File.Delete(precompiledSbcPath);
-                textBoxOutput.Text += "bp.sbcPB deleted\r\n";
+                textBoxOutput.AppendText("bp.sbcPB deleted\r\n");
             }
         }
 
@@ -579,7 +578,7 @@ namespace WhipsShipRecolorTool
 
         void UpdateColorPreviewsHSV()
         {
-            textBoxOutput.Text += "Update HSV\r\n";
+            textBoxOutput.AppendText("Update HSV\r\n");
 
             var hue = (float)numericUpDownHue.Value;
             var saturation = (float)numericUpDownSaturation.Value;
@@ -609,7 +608,7 @@ namespace WhipsShipRecolorTool
 
         private void checkBoxShowRGB_CheckedChanged(object sender, EventArgs e)
         {
-            textBoxOutput.Text += "RGB checkbox changed\r\n";
+            textBoxOutput.AppendText("RGB checkbox changed\r\n");
             WriteColorsToListBox();
         }
 
@@ -624,10 +623,10 @@ namespace WhipsShipRecolorTool
         {
             var customColors = colorDialog1.CustomColors;
             var newCustomColors = new List<int>(customColors);
-            textBoxOutput.Text += $"Custom colors: {customColors.Length}\r\n";
+            textBoxOutput.AppendText($"Custom colors: {customColors.Length}\r\n");
 
             newCustomColors.RemoveAll(x => x == 16777215);
-            textBoxOutput.Text += $"New custom colors: {newCustomColors.Count}\r\n";
+            textBoxOutput.AppendText($"New custom colors: {newCustomColors.Count}\r\n");
 
             foreach (var color in newCustomColors)
             {
@@ -641,10 +640,10 @@ namespace WhipsShipRecolorTool
             if (!customColorList.Contains(colorInt))
                 customColorList.Add(colorInt);
 
-            textBoxOutput.Text += "Color added to picker\r\n";
-            textBoxOutput.Text += $"RGB {colorToAdd.R}, {colorToAdd.G}, {colorToAdd.B}\r\n";
-            textBoxOutput.Text += $"ARGB {colorToAdd.ToArgb()}\r\n";
-            textBoxOutput.Text += $"Int {colorInt}\r\n";
+            textBoxOutput.AppendText("Color added to picker\r\n");
+            textBoxOutput.AppendText($"RGB {colorToAdd.R}, {colorToAdd.G}, {colorToAdd.B}\r\n");
+            textBoxOutput.AppendText($"ARGB {colorToAdd.ToArgb()}\r\n");
+            textBoxOutput.AppendText($"Int {colorInt}\r\n");
 
             customColors = customColorList.ToArray();
             colorDialog1.CustomColors = customColors;
