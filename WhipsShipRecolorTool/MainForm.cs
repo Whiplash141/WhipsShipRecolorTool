@@ -17,9 +17,9 @@ namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.0.4";
+        const string myVersionString = "0.0.0.5";
         const string buildDateString = "2/9/18";
-        const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
+        const string githubVersionUrl = "http://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
         string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
 
@@ -160,7 +160,11 @@ namespace WhipsShipRecolorTool
 
             public string ToMaskString()
             {
-                return $"<ColorMaskHSV x=\"{X.ToString(new CultureInfo("en-US"))}\" y=\"{Y.ToString(new CultureInfo("en-US"))}\" z=\"{Z.ToString(new CultureInfo("en-US"))}\" />";
+                var x = X.ToString(CultureInfo.InvariantCulture);
+                var y = Y.ToString(CultureInfo.InvariantCulture);
+                var z = Z.ToString(CultureInfo.InvariantCulture);
+                var maskString = $"<ColorMaskHSV x=\"{x}\" y=\"{y}\" z=\"{z}\" />";
+                return maskString.Replace(",",".");
             }
 
             public string HSVToString()
