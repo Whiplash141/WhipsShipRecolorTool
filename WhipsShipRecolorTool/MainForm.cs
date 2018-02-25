@@ -17,8 +17,8 @@ namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.0.8";
-        const string buildDateString = "2/10/18";
+        const string myVersionString = "0.0.0.9";
+        const string buildDateString = "2/24/18";
         const string githubVersionUrl = "http://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
         string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
@@ -29,8 +29,7 @@ namespace WhipsShipRecolorTool
         string maskToReplace = "";
 
         const string fileExtension = ".sbc";
-        const string fileName = "bp";
-        const string fileNameBackup = "bp_backup";
+        const string fileExtensionBackup = "_backup.sbc";
         //const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*.?[0-9]*?\"( *?)y=\"-?[0-9]*.?[0-9]*?\"( *?)z=\"-?[0-9]*.?[0-9]*?\"( *?)/>";
         const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)y=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)z=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)/>";
 
@@ -353,7 +352,10 @@ namespace WhipsShipRecolorTool
             public static ColorVector HSVFromMaskString(string mask)
             {
                 if (!Regex.IsMatch(mask, maskPattern))
+                {
+                    //Console.WriteLine("Regex did not match");
                     return new ColorVector(0, 0, 0);
+                }
 
                 mask = mask.Replace(" ", ""); //remove spaces
 
@@ -367,8 +369,16 @@ namespace WhipsShipRecolorTool
                 var format = new NumberFormatInfo();
                 format.NumberDecimalSeparator = ".";
 
-                if (!float.TryParse(maskSplit[1], NumberStyles.Number, format, out h) || !float.TryParse(maskSplit[3], NumberStyles.Number, format, out s) || !float.TryParse(maskSplit[5], NumberStyles.Number, format, out v))
+                if (!float.TryParse(maskSplit[1], (NumberStyles.Number | NumberStyles.AllowExponent), format, out h) || !float.TryParse(maskSplit[3], (NumberStyles.Number | NumberStyles.AllowExponent), format, out s) || !float.TryParse(maskSplit[5], (NumberStyles.Number | NumberStyles.AllowExponent), format, out v))
+                {
+                    /*
+                    Console.WriteLine("Color failed to parse");
+                    Console.WriteLine(float.TryParse(maskSplit[1], NumberStyles.Number, format, out h));
+                    Console.WriteLine(float.TryParse(maskSplit[3], NumberStyles.Number, format, out s));
+                    Console.WriteLine(float.TryParse(maskSplit[5], NumberStyles.Number, format, out v));
+                    */
                     return new ColorVector(0, 0, 0);
+                }
 
                 ColorVector hsvMask = new ColorVector(h, s, v);
 
@@ -555,7 +565,7 @@ namespace WhipsShipRecolorTool
         private void buttonSave_Click(object sender, EventArgs e)
         {
             //Backup file
-            File.WriteAllText(filepath.Replace(fileName, fileNameBackup), originalText);
+            File.WriteAllText(filepath.Replace(fileExtension, fileExtensionBackup), originalText);
             textBoxOutput.AppendText("Backup created\r\n");
 
             //Write new file
