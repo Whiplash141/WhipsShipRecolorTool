@@ -17,9 +17,9 @@ namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.0.9";
+        const string myVersionString = "0.0.1.0";
         const string buildDateString = "2/24/18";
-        const string githubVersionUrl = "http://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
+        const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
         string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
 
@@ -91,7 +91,11 @@ namespace WhipsShipRecolorTool
             var webRequest = (HttpWebRequest)WebRequest.Create(githubVersionUrl);
             webRequest.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
             webRequest.AllowAutoRedirect = true;
-            HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+
+
+            var webResponse = (HttpWebResponse)webRequest.GetResponse();
 
             var latestVersionUrl = webResponse.ResponseUri.ToString();
             var urlSplit = latestVersionUrl.Split('/');
