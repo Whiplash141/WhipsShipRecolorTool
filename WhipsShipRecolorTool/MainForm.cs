@@ -17,7 +17,7 @@ namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.1.1";
+        const string myVersionString = "0.0.1.2";
         const string buildDateString = "3/11/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
@@ -301,9 +301,9 @@ namespace WhipsShipRecolorTool
 
             public Color RGBToColor()
             {
-                int red = (int)Math.Round(X);
-                int green = (int)Math.Round(Y);
-                int blue = (int)Math.Round(Z);
+                int red = (int)Clamp((float)Math.Round(X), 0, 255);
+                int green = (int)Clamp((float)Math.Round(Y), 0, 255);
+                int blue = (int)Clamp((float)Math.Round(Z), 0, 255);
                 return Color.FromArgb(255, red, green, blue);
             }
 
@@ -334,12 +334,15 @@ namespace WhipsShipRecolorTool
                 return new ColorVector((float)Math.Round(X), (float)Math.Round(Y), (float)Math.Round(Z));
             }
 
-            private static float ClampRGB(float num)
+            public ColorVector ClampRGB()
             {
-                return num > 255f ? 255f : (num < 0f ? 0f : num);
+                var r = Clamp(X, 0f, 255f);
+                var g = Clamp(Y, 0f, 255f);
+                var b = Clamp(Z, 0f, 255f);
+                return new ColorVector(r, g, b);
             }
 
-            private static float Clamp(float num, float min, float max)
+            public static float Clamp(float num, float min, float max)
             {
                 return num > max ? max : (num < min ? min : num);
             }
@@ -349,7 +352,6 @@ namespace WhipsShipRecolorTool
                 var h = Clamp(X, 0f, 360f);
                 var s = Clamp(Y, 0f, 100f);
                 var v = Clamp(Z, 0f, 100f);
-
                 return new ColorVector(h, s, v);
             }
 
@@ -455,9 +457,9 @@ namespace WhipsShipRecolorTool
 
                 string thisOutput = "";
                 if (checkBoxShowRGB.Checked)
-                    thisOutput = $"RGB: {kvp.Value.HSVToRGB().Round()}";
+                    thisOutput = $"RGB: {kvp.Value.HSVToRGB().Round().ClampRGB()}";
                 else
-                    thisOutput = $"HSV: {kvp.Value.Round()}";
+                    thisOutput = $"HSV: {kvp.Value.Round().ClampHSV()}";
 
                 displayStrings.Add(thisOutput);
             }
@@ -554,9 +556,10 @@ namespace WhipsShipRecolorTool
 
             textBoxOutput.AppendText($"color {colorToReplace}\r\n");
 
-            numericUpDownHue.Value = (decimal)hsvVectorToReplace.X;
-            numericUpDownSaturation.Value = (decimal)hsvVectorToReplace.Y;
-            numericUpDownValue.Value = (decimal)hsvVectorToReplace.Z;
+            var clampedHsvVectorToReplace = hsvVectorToReplace.ClampHSV();
+            numericUpDownHue.Value = (decimal)clampedHsvVectorToReplace.X;
+            numericUpDownSaturation.Value = (decimal)clampedHsvVectorToReplace.Y;
+            numericUpDownValue.Value = (decimal)clampedHsvVectorToReplace.Z;
         }
 
         private void buttonReplace_Click(object sender, EventArgs e)
