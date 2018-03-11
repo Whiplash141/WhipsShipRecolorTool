@@ -342,9 +342,9 @@ namespace WhipsShipRecolorTool
             this.checkBoxVisualUpdate.Enabled = false;
             this.checkBoxVisualUpdate.Location = new System.Drawing.Point(30, 298);
             this.checkBoxVisualUpdate.Name = "checkBoxVisualUpdate";
-            this.checkBoxVisualUpdate.Size = new System.Drawing.Size(181, 21);
+            this.checkBoxVisualUpdate.Size = new System.Drawing.Size(221, 21);
             this.checkBoxVisualUpdate.TabIndex = 27;
-            this.checkBoxVisualUpdate.Text = "Offset for Visual Update";
+            this.checkBoxVisualUpdate.Text = "Offset for Visual Update 1.186";
             this.toolTip1.SetToolTip(this.checkBoxVisualUpdate, "This modifies all colors to appear in-game the same as they did before SE Update " +
         "1.186");
             this.checkBoxVisualUpdate.UseVisualStyleBackColor = true;
