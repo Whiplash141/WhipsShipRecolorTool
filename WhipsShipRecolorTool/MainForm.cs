@@ -17,7 +17,7 @@ namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.1.2";
+        const string myVersionString = "0.0.1.3";
         const string buildDateString = "3/11/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
@@ -675,7 +675,7 @@ namespace WhipsShipRecolorTool
                 foreach (var kvp in kvpList)
                 {
                     var color = kvp.Value;
-                    color = new ColorVector(color.X, color.Y, color.Z + 45f);
+                    color = new ColorVector(color.X, (color.Y > 0f ? color.Y + 80f : color.Y), color.Z + 45f);
                     uniqueColors[kvp.Key] = color;
                 }
             }
@@ -684,7 +684,7 @@ namespace WhipsShipRecolorTool
                 foreach (var kvp in kvpList)
                 {
                     var color = kvp.Value;
-                    color = new ColorVector(color.X, color.Y, color.Z - 45f);
+                    color = new ColorVector(color.X, (color.Y > 0f ? color.Y - 80f : color.Y), color.Z - 45f);
                     uniqueColors[kvp.Key] = color;
                 }
             }
