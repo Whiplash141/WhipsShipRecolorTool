@@ -17,8 +17,8 @@ namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.1.0";
-        const string buildDateString = "2/24/18";
+        const string myVersionString = "0.0.1.1";
+        const string buildDateString = "3/11/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
         string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
@@ -493,6 +493,9 @@ namespace WhipsShipRecolorTool
         {
             filepath = openFileDialog1.FileName;
             textBoxFilePath.Text = filepath;
+            checkBoxVisualUpdate.Checked = false;
+            checkBoxVisualUpdate.Enabled = true;
+            checkBoxShowRGB.Enabled = true;
 
             LoadBlueprint();
         }
@@ -536,8 +539,6 @@ namespace WhipsShipRecolorTool
             var index = listBoxColors.SelectedIndex;
             if (index == -1)
                 return;
-
-
 
             maskToReplace = uniqueColors.Keys.ElementAt(index);
             hsvVectorToReplace = uniqueColors[maskToReplace];
@@ -661,6 +662,31 @@ namespace WhipsShipRecolorTool
 
             customColors = customColorList.ToArray();
             colorDialog1.CustomColors = customColors;
+        }
+
+        private void checkBoxVisualUpdate_CheckedChanged(object sender, EventArgs e)
+        {
+            List<KeyValuePair<string, ColorVector>> kvpList = uniqueColors.ToList();
+            if (checkBoxVisualUpdate.Checked)
+            {
+                foreach (var kvp in kvpList)
+                {
+                    var color = kvp.Value;
+                    color = new ColorVector(color.X, color.Y, color.Z + 45f);
+                    uniqueColors[kvp.Key] = color;
+                }
+            }
+            else
+            {
+                foreach (var kvp in kvpList)
+                {
+                    var color = kvp.Value;
+                    color = new ColorVector(color.X, color.Y, color.Z - 45f);
+                    uniqueColors[kvp.Key] = color;
+                }
+            }
+            WriteColorsToListBox();
+            UpdateColorPreviewsHSV();
         }
     }
 }

@@ -58,6 +58,7 @@ namespace WhipsShipRecolorTool
             this.buttonAddColor = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.backgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
+            this.checkBoxVisualUpdate = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxColorPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSaturation)).BeginInit();
@@ -307,6 +308,7 @@ namespace WhipsShipRecolorTool
             // 
             this.checkBoxShowRGB.AutoSize = true;
             this.checkBoxShowRGB.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.checkBoxShowRGB.Enabled = false;
             this.checkBoxShowRGB.Location = new System.Drawing.Point(30, 276);
             this.checkBoxShowRGB.Name = "checkBoxShowRGB";
             this.checkBoxShowRGB.Size = new System.Drawing.Size(145, 21);
@@ -334,11 +336,26 @@ namespace WhipsShipRecolorTool
             this.backgroundWorkerUpdate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerUpdate_DoWork);
             this.backgroundWorkerUpdate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerUpdate_RunWorkerCompleted);
             // 
+            // checkBoxVisualUpdate
+            // 
+            this.checkBoxVisualUpdate.AutoSize = true;
+            this.checkBoxVisualUpdate.Enabled = false;
+            this.checkBoxVisualUpdate.Location = new System.Drawing.Point(30, 298);
+            this.checkBoxVisualUpdate.Name = "checkBoxVisualUpdate";
+            this.checkBoxVisualUpdate.Size = new System.Drawing.Size(181, 21);
+            this.checkBoxVisualUpdate.TabIndex = 27;
+            this.checkBoxVisualUpdate.Text = "Offset for Visual Update";
+            this.toolTip1.SetToolTip(this.checkBoxVisualUpdate, "This modifies all colors to appear in-game the same as they did before SE Update " +
+        "1.186");
+            this.checkBoxVisualUpdate.UseVisualStyleBackColor = true;
+            this.checkBoxVisualUpdate.CheckedChanged += new System.EventHandler(this.checkBoxVisualUpdate_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(679, 516);
+            this.Controls.Add(this.checkBoxVisualUpdate);
             this.Controls.Add(this.buttonAddColor);
             this.Controls.Add(this.checkBoxShowRGB);
             this.Controls.Add(this.label2);
@@ -398,6 +415,7 @@ namespace WhipsShipRecolorTool
         private System.Windows.Forms.Button buttonAddColor;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.ComponentModel.BackgroundWorker backgroundWorkerUpdate;
+        private System.Windows.Forms.CheckBox checkBoxVisualUpdate;
     }
 }
 
