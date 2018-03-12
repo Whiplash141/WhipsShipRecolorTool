@@ -17,7 +17,8 @@ namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.1.4";
+        //make new string called offsetText to switch to instead of doing conversions
+        const string myVersionString = "0.0.1.5";
         const string buildDateString = "3/11/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
@@ -27,6 +28,8 @@ namespace WhipsShipRecolorTool
         string originalText = "";
         string text = "";
         string maskToReplace = "";
+        string offsetText = "";
+        string notOffsetText = "";
 
         const string fileExtension = ".sbc";
         const string fileExtensionBackup = "_backup.sbc";
@@ -422,6 +425,7 @@ namespace WhipsShipRecolorTool
             text = RoundColors(text, maskPattern);
             GetUniqueColors(text, maskPattern);
             WriteColorsToListBox();
+            CreateColorOffsets();
         }
 
         HashSet<string> uniqueStrings = new HashSet<string>();
@@ -724,20 +728,28 @@ namespace WhipsShipRecolorTool
            return new ColorVector(color.X, color.Y, color.Z + 45f);
         }
 
-        void OffsetColorsUp()
+        void CreateColorOffsets()
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
-            textBoxOutput.AppendText("\n\rCOLORS OFFSET UP\n\r");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
+            textBoxOutput.AppendText("Creating color offset\r\n");
             List<KeyValuePair<string, ColorVector>> kvpList = uniqueColors.ToList();
             foreach (var kvp in kvpList)
             {
                 var color = kvp.Value;
                 color = new ColorVector(color.X, color.Y, color.Z + 25f);
-                text = text.Replace(kvp.Key, color.ClampHSV().HSVToColorMask().ToMaskString());
-                textBoxOutput.AppendText($"Old: {kvp.Key}\n\rNew: { color.ClampHSV().HSVToColorMask().ToMaskString()}\n\r");
-                //uniqueColors.Remove(kvp.Key);
-                //uniqueColors[color.ClampHSV().HSVToColorMask().ToMaskString()] = color;
+                offsetText = text.Replace(kvp.Key, color.ClampHSV().Round().HSVToColorMask().ToMaskString());
+                textBoxOutput.AppendText($"Old: {kvp.Key}\r\nNew: { color.ClampHSV().HSVToColorMask().ToMaskString()}\r\n");
             }
+        }
+
+        void OffsetColorsUp()
+        {
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\n\rCOLORS OFFSET UP\n\r");
+
+            notOffsetText = text;
+            text = offsetText;
+
             GetUniqueColors(text, maskPattern);
             WriteColorsToListBox();
         }
@@ -746,17 +758,10 @@ namespace WhipsShipRecolorTool
         {
             textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
             textBoxOutput.AppendText("\n\rCOLORS OFFSET DOWN\n\r");
-            List<KeyValuePair<string, ColorVector>> kvpList = uniqueColors.ToList();
-            foreach (var kvp in kvpList)
-            {
-                var color = kvp.Value;
-                color = new ColorVector(color.X, color.Y, color.Z - 25f);
-                text = text.Replace(kvp.Key, color.ClampHSV().HSVToColorMask().ToMaskString());
-                textBoxOutput.AppendText($"Old: {kvp.Key}\n\rNew: { color.ClampHSV().HSVToColorMask().ToMaskString()}\n\r");
-                //uniqueColors[kvp.Key] = color;
-                //uniqueColors.Remove(kvp.Key);
-                //uniqueColors[color.ClampHSV().HSVToColorMask().ToMaskString()] = color;
-            }
+
+            offsetText = text;
+            text = notOffsetText;
+
             GetUniqueColors(text, maskPattern);
             WriteColorsToListBox();
         }
