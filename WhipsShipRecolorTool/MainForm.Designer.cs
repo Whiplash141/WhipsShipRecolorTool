@@ -158,6 +158,7 @@ namespace WhipsShipRecolorTool
             // 
             // textBoxOutput
             // 
+            this.textBoxOutput.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.textBoxOutput.Location = new System.Drawing.Point(30, 375);
             this.textBoxOutput.Multiline = true;
             this.textBoxOutput.Name = "textBoxOutput";

@@ -17,7 +17,7 @@ namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
-        const string myVersionString = "0.0.1.3";
+        const string myVersionString = "0.0.1.4";
         const string buildDateString = "3/11/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
@@ -56,6 +56,7 @@ namespace WhipsShipRecolorTool
                     openFileDialog1.InitialDirectory = desiredDirectory;
             }
 
+            textBoxOutput.Cursor = Cursors.IBeam;
 
             //Set form name
             this.Text = formTitle;
@@ -402,9 +403,12 @@ namespace WhipsShipRecolorTool
 
         void LoadBlueprint()
         {
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("Loading file...\r\n");
+            textBoxOutput.AppendText($"path: {filepath}\r\n");
             //Load file
             originalText = File.ReadAllText(filepath);
-            textBoxOutput.Text = ("File loaded successfully!");
+            textBoxOutput.AppendText("File loaded successfully!");
 
             text = originalText;
 
@@ -415,8 +419,30 @@ namespace WhipsShipRecolorTool
             buttonSave.Enabled = true;
             pictureBoxColorPreview.Enabled = true;
 
+            text = RoundColors(text, maskPattern);
             GetUniqueColors(text, maskPattern);
             WriteColorsToListBox();
+        }
+
+        HashSet<string> uniqueStrings = new HashSet<string>();
+        string RoundColors(string text, string maskPattern)
+        {
+            var matches = Regex.Matches(text, maskPattern);
+
+            uniqueStrings.Clear();
+            foreach (var match in matches)
+            {
+                var matchString = match.ToString();
+                uniqueStrings.Add(matchString);
+            }
+
+            foreach (var matchString in uniqueStrings)
+            {
+                var color = ColorVector.HSVFromMaskString(matchString).ClampHSV().Round();
+                var roundedColorString = color.HSVToColorMask().ToMaskString();
+                text = text.Replace(matchString, roundedColorString);
+            }
+            return text;
         }
 
         void GetUniqueColors(string text, string maskPattern)
@@ -425,15 +451,15 @@ namespace WhipsShipRecolorTool
             int count = 0;
             uniqueColors.Clear();
 
-            textBoxOutput.AppendText("-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText("Getting unique colors\r\n");
 
             foreach (var match in matches)
             {
                 count++;
                 var matchString = match.ToString();
-                uniqueColors[matchString] = ColorVector.HSVFromMaskString(matchString);
-                
+                var color = ColorVector.HSVFromMaskString(matchString);
+                uniqueColors[matchString] = color;
             }
 
             foreach (var kvp in uniqueColors)
@@ -450,11 +476,13 @@ namespace WhipsShipRecolorTool
 
         void WriteColorsToListBox()
         {
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("Writing colors to list box\r\n");
+
             displayStrings.Clear();
 
             foreach (var kvp in uniqueColors)
             {
-
                 string thisOutput = "";
                 if (checkBoxShowRGB.Checked)
                     thisOutput = $"RGB: {kvp.Value.HSVToRGB().Round().ClampRGB()}";
@@ -471,12 +499,13 @@ namespace WhipsShipRecolorTool
         void ReplaceColor()
         {
             listBoxColors.ClearSelected();
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
             textBoxOutput.AppendText($"Replacing color\r\n");
             var rgb = ColorVector.FromColor(replacementColor);
             textBoxOutput.AppendText($"RGB: {rgb}\r\n");
             var hsv = rgb.RGBToHSV().Round();
             textBoxOutput.AppendText($"HSV: {hsv}\r\n");
-            var hsvMask = hsv.HSVToColorMask().ToMaskString();
+            var hsvMask = hsv.ClampHSV().HSVToColorMask().ToMaskString(); //clamps before converting to the mask
             textBoxOutput.AppendText($"mask: {hsvMask}\r\n");
 
             text = text.Replace(maskToReplace, hsvMask);
@@ -487,6 +516,7 @@ namespace WhipsShipRecolorTool
 
         private void buttonBrowse_Click(object sender, EventArgs e)
         {
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
             textBoxOutput.AppendText("Browse for file\r\n");
             openFileDialog1.ShowDialog();
         }
@@ -504,6 +534,7 @@ namespace WhipsShipRecolorTool
 
         void ShowColorPicker()
         {
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
             textBoxOutput.AppendText("Color picker opened\r\n");
 
             var customColors = customColorList.ToArray();
@@ -548,7 +579,8 @@ namespace WhipsShipRecolorTool
             var colorToReplace = hsvVectorToReplace.HSVToRGB().RGBToColor();
             replacementColor = colorToReplace; //default to the same to avoid issues
 
-            textBoxOutput.AppendText("Color index changed\r\n");
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText($"Color index changed: {index}\r\n");
 
             textBoxOutput.AppendText($"hsv {hsvVectorToReplace}\r\nrgb {hsvVectorToReplace.HSVToRGB()}\r\n");
 
@@ -560,6 +592,8 @@ namespace WhipsShipRecolorTool
             numericUpDownHue.Value = (decimal)clampedHsvVectorToReplace.X;
             numericUpDownSaturation.Value = (decimal)clampedHsvVectorToReplace.Y;
             numericUpDownValue.Value = (decimal)clampedHsvVectorToReplace.Z;
+
+            textBoxOutput.AppendText($"back color {pictureBoxColorPreview.BackColor}\r\n");
         }
 
         private void buttonReplace_Click(object sender, EventArgs e)
@@ -572,6 +606,8 @@ namespace WhipsShipRecolorTool
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("Saving file...\r\n");
             //Backup file
             File.WriteAllText(filepath.Replace(fileExtension, fileExtensionBackup), originalText);
             textBoxOutput.AppendText("Backup created\r\n");
@@ -596,7 +632,8 @@ namespace WhipsShipRecolorTool
 
         void UpdateColorPreviewsHSV()
         {
-            textBoxOutput.AppendText("Update HSV\r\n");
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("Updating HSV\r\n");
 
             var hue = (float)numericUpDownHue.Value;
             var saturation = (float)numericUpDownSaturation.Value;
@@ -626,6 +663,7 @@ namespace WhipsShipRecolorTool
 
         private void checkBoxShowRGB_CheckedChanged(object sender, EventArgs e)
         {
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
             textBoxOutput.AppendText("RGB checkbox changed\r\n");
             WriteColorsToListBox();
         }
@@ -669,27 +707,58 @@ namespace WhipsShipRecolorTool
 
         private void checkBoxVisualUpdate_CheckedChanged(object sender, EventArgs e)
         {
-            List<KeyValuePair<string, ColorVector>> kvpList = uniqueColors.ToList();
             if (checkBoxVisualUpdate.Checked)
             {
-                foreach (var kvp in kvpList)
-                {
-                    var color = kvp.Value;
-                    color = new ColorVector(color.X, (color.Y > 0f ? color.Y + 80f : color.Y), color.Z + 45f);
-                    uniqueColors[kvp.Key] = color;
-                }
+                OffsetColorsUp();
             }
             else
             {
-                foreach (var kvp in kvpList)
-                {
-                    var color = kvp.Value;
-                    color = new ColorVector(color.X, (color.Y > 0f ? color.Y - 80f : color.Y), color.Z - 45f);
-                    uniqueColors[kvp.Key] = color;
-                }
+                OffsetColorsDown();
             }
             WriteColorsToListBox();
             UpdateColorPreviewsHSV();
+        }
+
+        ColorVector OffsetColorDisplay(ColorVector color)
+        {
+           return new ColorVector(color.X, color.Y, color.Z + 45f);
+        }
+
+        void OffsetColorsUp()
+        {
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\n\rCOLORS OFFSET UP\n\r");
+            List<KeyValuePair<string, ColorVector>> kvpList = uniqueColors.ToList();
+            foreach (var kvp in kvpList)
+            {
+                var color = kvp.Value;
+                color = new ColorVector(color.X, color.Y, color.Z + 25f);
+                text = text.Replace(kvp.Key, color.ClampHSV().HSVToColorMask().ToMaskString());
+                textBoxOutput.AppendText($"Old: {kvp.Key}\n\rNew: { color.ClampHSV().HSVToColorMask().ToMaskString()}\n\r");
+                //uniqueColors.Remove(kvp.Key);
+                //uniqueColors[color.ClampHSV().HSVToColorMask().ToMaskString()] = color;
+            }
+            GetUniqueColors(text, maskPattern);
+            WriteColorsToListBox();
+        }
+
+        void OffsetColorsDown()
+        {
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\n\rCOLORS OFFSET DOWN\n\r");
+            List<KeyValuePair<string, ColorVector>> kvpList = uniqueColors.ToList();
+            foreach (var kvp in kvpList)
+            {
+                var color = kvp.Value;
+                color = new ColorVector(color.X, color.Y, color.Z - 25f);
+                text = text.Replace(kvp.Key, color.ClampHSV().HSVToColorMask().ToMaskString());
+                textBoxOutput.AppendText($"Old: {kvp.Key}\n\rNew: { color.ClampHSV().HSVToColorMask().ToMaskString()}\n\r");
+                //uniqueColors[kvp.Key] = color;
+                //uniqueColors.Remove(kvp.Key);
+                //uniqueColors[color.ClampHSV().HSVToColorMask().ToMaskString()] = color;
+            }
+            GetUniqueColors(text, maskPattern);
+            WriteColorsToListBox();
         }
     }
 }
