@@ -18,7 +18,7 @@ namespace WhipsShipRecolorTool
     public partial class MainForm : Form
     {
         //make new string called offsetText to switch to instead of doing conversions
-        const string myVersionString = "0.0.1.5";
+        const string myVersionString = "0.0.1.6";
         const string buildDateString = "3/11/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
@@ -733,11 +733,12 @@ namespace WhipsShipRecolorTool
             textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText("Creating color offset\r\n");
             List<KeyValuePair<string, ColorVector>> kvpList = uniqueColors.ToList();
+            offsetText = text;
             foreach (var kvp in kvpList)
             {
                 var color = kvp.Value;
                 color = new ColorVector(color.X, color.Y, color.Z + 25f);
-                offsetText = text.Replace(kvp.Key, color.ClampHSV().Round().HSVToColorMask().ToMaskString());
+                offsetText = offsetText.Replace(kvp.Key, color.ClampHSV().Round().HSVToColorMask().ToMaskString());
                 textBoxOutput.AppendText($"Old: {kvp.Key}\r\nNew: { color.ClampHSV().HSVToColorMask().ToMaskString()}\r\n");
             }
         }
