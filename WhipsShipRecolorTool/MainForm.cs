@@ -18,7 +18,7 @@ namespace WhipsShipRecolorTool
     public partial class MainForm : Form
     {
         //make new string called offsetText to switch to instead of doing conversions
-        const string myVersionString = "1.0.0.1";
+        const string myVersionString = "1.0.0.2";
         const string buildDateString = "3/12/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
@@ -35,9 +35,9 @@ namespace WhipsShipRecolorTool
         const string fileExtensionBackup = "_backup.sbc";
         //const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*.?[0-9]*?\"( *?)y=\"-?[0-9]*.?[0-9]*?\"( *?)z=\"-?[0-9]*.?[0-9]*?\"( *?)/>";
         const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)y=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)z=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)/>";
-        const string damagePattern = "<IntegrityPercent>.*</IntegrityPercent>";
-        const string buildPattern = "<BuildPercent>.*</BuildPercent>";
-        const string skeletonPattern = "<Skeleton>(.|\n)*</Skeleton>";
+        const string damagePattern = "<IntegrityPercent>.*?</IntegrityPercent>";
+        const string buildPattern = "<BuildPercent>.*?</BuildPercent>";
+        const string skeletonPattern = "<Skeleton>(.|\n)*?</Skeleton>";
 
         HashSet<string> uniqueStrings = new HashSet<string>();
 
@@ -801,7 +801,8 @@ namespace WhipsShipRecolorTool
 
             foreach (var thisString in uniqueStrings)
             {
-                text = text.Replace(thisString, "<IntegrityPercent>1</IntegrityPercent>");
+                text = text.Replace(thisString, "");
+                //textBoxOutput.AppendText($"match: {thisString}\r\n");
             }
 
             textBoxOutput.AppendText("Removing deformation bone info...\n\r");
@@ -818,6 +819,7 @@ namespace WhipsShipRecolorTool
             foreach (var thisString in uniqueStrings)
             {
                 text = text.Replace(thisString, "");
+                //textBoxOutput.AppendText($"match: {thisString}\r\n");
             }
         }
 
@@ -837,7 +839,7 @@ namespace WhipsShipRecolorTool
 
             foreach (var thisString in uniqueStrings)
             {
-                text = text.Replace(thisString, "<BuildPercent>1</BuildPercent>");
+                text = text.Replace(thisString, "");
             }
         }
     }
