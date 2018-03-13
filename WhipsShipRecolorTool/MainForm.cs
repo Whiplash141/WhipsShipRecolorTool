@@ -18,7 +18,7 @@ namespace WhipsShipRecolorTool
     public partial class MainForm : Form
     {
         //make new string called offsetText to switch to instead of doing conversions
-        const string myVersionString = "1.0.0.2";
+        const string myVersionString = "1.0.0.3";
         const string buildDateString = "3/12/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
@@ -411,7 +411,7 @@ namespace WhipsShipRecolorTool
 
         void LoadBlueprint()
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText("Loading file...\r\n");
             textBoxOutput.AppendText($"path: {filepath}\r\n");
             //Load file
@@ -486,7 +486,7 @@ namespace WhipsShipRecolorTool
 
         void WriteColorsToListBox()
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText("Writing colors to list box\r\n");
 
             displayStrings.Clear();
@@ -509,7 +509,7 @@ namespace WhipsShipRecolorTool
         void ReplaceColor()
         {
             listBoxColors.ClearSelected();
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText($"Replacing color\r\n");
             var rgb = ColorVector.FromColor(replacementColor);
             textBoxOutput.AppendText($"RGB: {rgb}\r\n");
@@ -528,7 +528,7 @@ namespace WhipsShipRecolorTool
 
         private void buttonBrowse_Click(object sender, EventArgs e)
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText("Browse for file\r\n");
             openFileDialog1.ShowDialog();
         }
@@ -546,7 +546,7 @@ namespace WhipsShipRecolorTool
 
         void ShowColorPicker()
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText("Color picker opened\r\n");
 
             var customColors = customColorList.ToArray();
@@ -591,7 +591,7 @@ namespace WhipsShipRecolorTool
             var colorToReplace = hsvVectorToReplace.HSVToRGB().RGBToColor();
             replacementColor = colorToReplace; //default to the same to avoid issues
 
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText($"Color index changed: {index}\r\n");
 
             textBoxOutput.AppendText($"hsv {hsvVectorToReplace}\r\nrgb {hsvVectorToReplace.HSVToRGB()}\r\n");
@@ -619,7 +619,7 @@ namespace WhipsShipRecolorTool
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText("Saving file...\r\n");
             //Backup file
             File.WriteAllText(filepath.Replace(fileExtension, fileExtensionBackup), originalText);
@@ -652,7 +652,7 @@ namespace WhipsShipRecolorTool
 
         void UpdateColorPreviewsHSV()
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText("Updating HSV\r\n");
 
             var hue = (float)numericUpDownHue.Value;
@@ -683,7 +683,7 @@ namespace WhipsShipRecolorTool
 
         private void checkBoxShowRGB_CheckedChanged(object sender, EventArgs e)
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText("RGB checkbox changed\r\n");
             WriteColorsToListBox();
         }
@@ -761,8 +761,8 @@ namespace WhipsShipRecolorTool
 
         void OffsetColorsUp()
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
-            textBoxOutput.AppendText("COLORS OFFSET UP\n\r");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
+            textBoxOutput.AppendText("COLORS OFFSET UP\r\n");
 
             notOffsetText = text;
             text = offsetText;
@@ -773,8 +773,8 @@ namespace WhipsShipRecolorTool
 
         void OffsetColorsDown()
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
-            textBoxOutput.AppendText("COLORS OFFSET DOWN\n\r");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
+            textBoxOutput.AppendText("COLORS OFFSET DOWN\r\n");
 
             offsetText = text;
             text = notOffsetText;
@@ -785,12 +785,12 @@ namespace WhipsShipRecolorTool
 
         void RepairBlocks()
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
-            textBoxOutput.AppendText("Repairing blocks\n\r");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
+            textBoxOutput.AppendText("Repairing blocks\r\n");
 
-            textBoxOutput.AppendText("Changing integrity ratio...\n\r");
+            textBoxOutput.AppendText("Changing integrity ratio...\r\n");
             var matches = Regex.Matches(text, damagePattern);
-            textBoxOutput.AppendText($"Regex matches: {matches.Count}\n\r");
+            textBoxOutput.AppendText($"Regex matches: {matches.Count}\r\n");
 
             uniqueStrings.Clear();
             foreach (var match in matches)
@@ -805,9 +805,9 @@ namespace WhipsShipRecolorTool
                 //textBoxOutput.AppendText($"match: {thisString}\r\n");
             }
 
-            textBoxOutput.AppendText("Removing deformation bone info...\n\r");
+            textBoxOutput.AppendText("Removing deformation bone info...\r\n");
             matches = Regex.Matches(text, skeletonPattern);
-            textBoxOutput.AppendText($"Regex matches: {matches.Count}\n\r");
+            textBoxOutput.AppendText($"Regex matches: {matches.Count}\r\n");
 
             uniqueStrings.Clear();
             foreach (var match in matches)
@@ -825,10 +825,10 @@ namespace WhipsShipRecolorTool
 
         void BuildBlocks()
         {
-            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
-            textBoxOutput.AppendText("Constructing blocks\n\r");
+            textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
+            textBoxOutput.AppendText("Constructing blocks\r\n");
             var matches = Regex.Matches(text, buildPattern);
-            textBoxOutput.AppendText($"Regex matches: {matches.Count}\n\r");
+            textBoxOutput.AppendText($"Regex matches: {matches.Count}\r\n");
 
             uniqueStrings.Clear();
             foreach (var match in matches)
