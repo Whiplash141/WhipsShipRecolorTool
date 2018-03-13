@@ -18,8 +18,8 @@ namespace WhipsShipRecolorTool
     public partial class MainForm : Form
     {
         //make new string called offsetText to switch to instead of doing conversions
-        const string myVersionString = "0.0.1.6";
-        const string buildDateString = "3/11/18";
+        const string myVersionString = "1.0.0.0";
+        const string buildDateString = "3/12/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
         string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
@@ -35,6 +35,10 @@ namespace WhipsShipRecolorTool
         const string fileExtensionBackup = "_backup.sbc";
         //const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*.?[0-9]*?\"( *?)y=\"-?[0-9]*.?[0-9]*?\"( *?)z=\"-?[0-9]*.?[0-9]*?\"( *?)/>";
         const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)y=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)z=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)/>";
+        const string damagePattern = "<IntegrityPercent>.*</IntegrityPercent>";
+        const string buildPattern = "<BuildPercent>.*</BuildPercent>";
+
+        HashSet<string> uniqueStrings = new HashSet<string>();
 
         Color replacementColor = Color.Black;
 
@@ -420,7 +424,8 @@ namespace WhipsShipRecolorTool
             buttonPickColor.Enabled = true;
             buttonAddColor.Enabled = true;
             buttonSave.Enabled = true;
-            pictureBoxColorPreview.Enabled = true;
+            pictureBoxOldColorPreview.Enabled = true;
+            groupBoxMisc.Enabled = true;
 
             text = RoundColors(text, maskPattern);
             GetUniqueColors(text, maskPattern);
@@ -428,7 +433,7 @@ namespace WhipsShipRecolorTool
             CreateColorOffsets();
         }
 
-        HashSet<string> uniqueStrings = new HashSet<string>();
+        
         string RoundColors(string text, string maskPattern)
         {
             var matches = Regex.Matches(text, maskPattern);
@@ -514,6 +519,8 @@ namespace WhipsShipRecolorTool
 
             text = text.Replace(maskToReplace, hsvMask);
 
+            pictureBoxOldColorPreview.BackColor = replacementColor;
+
             GetUniqueColors(text, maskPattern);
             WriteColorsToListBox();
         }
@@ -548,7 +555,7 @@ namespace WhipsShipRecolorTool
 
             if (result == DialogResult.OK)
             {
-                pictureBoxColorPreview.BackColor = colorDialog1.Color;
+                pictureBoxNewColorPreview.BackColor = colorDialog1.Color;
                 replacementColor = colorDialog1.Color;
 
                 var rgb = ColorVector.FromColor(colorDialog1.Color);
@@ -588,7 +595,8 @@ namespace WhipsShipRecolorTool
 
             textBoxOutput.AppendText($"hsv {hsvVectorToReplace}\r\nrgb {hsvVectorToReplace.HSVToRGB()}\r\n");
 
-            pictureBoxColorPreview.BackColor = colorToReplace;
+            pictureBoxOldColorPreview.BackColor = colorToReplace;
+            pictureBoxNewColorPreview.BackColor = colorToReplace;
 
             textBoxOutput.AppendText($"color {colorToReplace}\r\n");
 
@@ -597,7 +605,7 @@ namespace WhipsShipRecolorTool
             numericUpDownSaturation.Value = (decimal)clampedHsvVectorToReplace.Y;
             numericUpDownValue.Value = (decimal)clampedHsvVectorToReplace.Z;
 
-            textBoxOutput.AppendText($"back color {pictureBoxColorPreview.BackColor}\r\n");
+            textBoxOutput.AppendText($"back color {pictureBoxOldColorPreview.BackColor}\r\n");
         }
 
         private void buttonReplace_Click(object sender, EventArgs e)
@@ -615,6 +623,13 @@ namespace WhipsShipRecolorTool
             //Backup file
             File.WriteAllText(filepath.Replace(fileExtension, fileExtensionBackup), originalText);
             textBoxOutput.AppendText("Backup created\r\n");
+
+            //Repair and build blocks
+            if (checkBoxRepair.Checked)
+                RepairBlocks();
+
+            if (checkBoxBuild.Checked)
+                BuildBlocks();
 
             //Write new file
             File.WriteAllText(filepath, text);
@@ -646,7 +661,7 @@ namespace WhipsShipRecolorTool
             var rgb = hsv.HSVToRGB();
             var color = rgb.RGBToColor();
 
-            pictureBoxColorPreview.BackColor = color;
+            pictureBoxNewColorPreview.BackColor = color;
             replacementColor = color;
         }
 
@@ -694,7 +709,7 @@ namespace WhipsShipRecolorTool
                     customColorList.Add(color);
             }
 
-            var colorToAdd = pictureBoxColorPreview.BackColor;
+            var colorToAdd = pictureBoxOldColorPreview.BackColor;
             int colorInt = colorToAdd.B << 16 | colorToAdd.G << 8 | colorToAdd.R;
 
             if (!customColorList.Contains(colorInt))
@@ -746,7 +761,7 @@ namespace WhipsShipRecolorTool
         void OffsetColorsUp()
         {
             textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
-            textBoxOutput.AppendText("\n\rCOLORS OFFSET UP\n\r");
+            textBoxOutput.AppendText("COLORS OFFSET UP\n\r");
 
             notOffsetText = text;
             text = offsetText;
@@ -758,13 +773,53 @@ namespace WhipsShipRecolorTool
         void OffsetColorsDown()
         {
             textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
-            textBoxOutput.AppendText("\n\rCOLORS OFFSET DOWN\n\r");
+            textBoxOutput.AppendText("COLORS OFFSET DOWN\n\r");
 
             offsetText = text;
             text = notOffsetText;
 
             GetUniqueColors(text, maskPattern);
             WriteColorsToListBox();
+        }
+
+        void RepairBlocks()
+        {
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("Repairing blocks\n\r");
+            var matches = Regex.Matches(text, damagePattern);
+            textBoxOutput.AppendText($"Regex matches: {matches.Count}\n\r");
+
+            uniqueStrings.Clear();
+            foreach (var match in matches)
+            {
+                var matchString = match.ToString();
+                uniqueStrings.Add(matchString);
+            }
+
+            foreach (var thisString in uniqueStrings)
+            {
+                text = text.Replace(thisString, "<IntegrityPercent>1</IntegrityPercent>");
+            }
+        }
+
+        void BuildBlocks()
+        {
+            textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
+            textBoxOutput.AppendText("Constructing blocks\n\r");
+            var matches = Regex.Matches(text, buildPattern);
+            textBoxOutput.AppendText($"Regex matches: {matches.Count}\n\r");
+
+            uniqueStrings.Clear();
+            foreach (var match in matches)
+            {
+                var matchString = match.ToString();
+                uniqueStrings.Add(matchString);
+            }
+
+            foreach (var thisString in uniqueStrings)
+            {
+                text = text.Replace(thisString, "<BuildPercent>1</BuildPercent>");
+            }
         }
     }
 }

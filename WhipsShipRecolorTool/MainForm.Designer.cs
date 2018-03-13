@@ -36,14 +36,13 @@ namespace WhipsShipRecolorTool
             this.textBoxFilePath = new System.Windows.Forms.TextBox();
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.listBoxColors = new System.Windows.Forms.ListBox();
-            this.pictureBoxColorPreview = new System.Windows.Forms.PictureBox();
+            this.pictureBoxOldColorPreview = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonPickColor = new System.Windows.Forms.Button();
             this.buttonReplace = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.textBoxOutput = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonUpdateHSV = new System.Windows.Forms.Button();
             this.numericUpDownValue = new System.Windows.Forms.NumericUpDown();
@@ -59,11 +58,21 @@ namespace WhipsShipRecolorTool
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.backgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
             this.checkBoxVisualUpdate = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxColorPreview)).BeginInit();
+            this.pictureBoxNewColorPreview = new System.Windows.Forms.PictureBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.groupBoxMisc = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkBoxRepair = new System.Windows.Forms.CheckBox();
+            this.checkBoxBuild = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOldColorPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSaturation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHue)).BeginInit();
             this.groupBoxHSV.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxNewColorPreview)).BeginInit();
+            this.groupBoxMisc.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -75,13 +84,13 @@ namespace WhipsShipRecolorTool
             this.textBoxFilePath.Location = new System.Drawing.Point(30, 41);
             this.textBoxFilePath.Name = "textBoxFilePath";
             this.textBoxFilePath.ReadOnly = true;
-            this.textBoxFilePath.Size = new System.Drawing.Size(527, 22);
+            this.textBoxFilePath.Size = new System.Drawing.Size(459, 22);
             this.textBoxFilePath.TabIndex = 0;
             // 
             // buttonBrowse
             // 
             this.buttonBrowse.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonBrowse.Location = new System.Drawing.Point(579, 35);
+            this.buttonBrowse.Location = new System.Drawing.Point(506, 35);
             this.buttonBrowse.Name = "buttonBrowse";
             this.buttonBrowse.Size = new System.Drawing.Size(75, 34);
             this.buttonBrowse.TabIndex = 1;
@@ -93,43 +102,43 @@ namespace WhipsShipRecolorTool
             // listBoxColors
             // 
             this.listBoxColors.Cursor = System.Windows.Forms.Cursors.Default;
+            this.listBoxColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxColors.FormattingEnabled = true;
             this.listBoxColors.ItemHeight = 16;
-            this.listBoxColors.Location = new System.Drawing.Point(30, 106);
+            this.listBoxColors.Location = new System.Drawing.Point(12, 21);
             this.listBoxColors.Name = "listBoxColors";
             this.listBoxColors.ScrollAlwaysVisible = true;
             this.listBoxColors.Size = new System.Drawing.Size(220, 164);
             this.listBoxColors.TabIndex = 3;
             this.listBoxColors.SelectedIndexChanged += new System.EventHandler(this.listBoxColors_SelectedIndexChanged);
             // 
-            // pictureBoxColorPreview
+            // pictureBoxOldColorPreview
             // 
-            this.pictureBoxColorPreview.BackColor = System.Drawing.Color.Black;
-            this.pictureBoxColorPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBoxColorPreview.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBoxColorPreview.Enabled = false;
-            this.pictureBoxColorPreview.Location = new System.Drawing.Point(256, 126);
-            this.pictureBoxColorPreview.Name = "pictureBoxColorPreview";
-            this.pictureBoxColorPreview.Size = new System.Drawing.Size(106, 104);
-            this.pictureBoxColorPreview.TabIndex = 4;
-            this.pictureBoxColorPreview.TabStop = false;
-            this.pictureBoxColorPreview.Click += new System.EventHandler(this.pictureBoxColorPreview_Click);
+            this.pictureBoxOldColorPreview.BackColor = System.Drawing.Color.Black;
+            this.pictureBoxOldColorPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBoxOldColorPreview.Cursor = System.Windows.Forms.Cursors.Default;
+            this.pictureBoxOldColorPreview.Enabled = false;
+            this.pictureBoxOldColorPreview.Location = new System.Drawing.Point(287, 107);
+            this.pictureBoxOldColorPreview.Name = "pictureBoxOldColorPreview";
+            this.pictureBoxOldColorPreview.Size = new System.Drawing.Size(106, 104);
+            this.pictureBoxOldColorPreview.TabIndex = 4;
+            this.pictureBoxOldColorPreview.TabStop = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(253, 106);
+            this.label1.Location = new System.Drawing.Point(284, 87);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(107, 17);
+            this.label1.Size = new System.Drawing.Size(76, 17);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Color Preview";
+            this.label1.Text = "Old Color";
             // 
             // buttonPickColor
             // 
             this.buttonPickColor.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonPickColor.Enabled = false;
-            this.buttonPickColor.Location = new System.Drawing.Point(368, 123);
+            this.buttonPickColor.Location = new System.Drawing.Point(287, 238);
             this.buttonPickColor.Name = "buttonPickColor";
             this.buttonPickColor.Size = new System.Drawing.Size(102, 52);
             this.buttonPickColor.TabIndex = 8;
@@ -143,11 +152,11 @@ namespace WhipsShipRecolorTool
             this.buttonReplace.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonReplace.Enabled = false;
             this.buttonReplace.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonReplace.Location = new System.Drawing.Point(368, 236);
+            this.buttonReplace.Location = new System.Drawing.Point(287, 351);
             this.buttonReplace.Name = "buttonReplace";
-            this.buttonReplace.Size = new System.Drawing.Size(102, 44);
+            this.buttonReplace.Size = new System.Drawing.Size(102, 47);
             this.buttonReplace.TabIndex = 9;
-            this.buttonReplace.Text = "Replace";
+            this.buttonReplace.Text = "Replace Old Color";
             this.toolTip1.SetToolTip(this.buttonReplace, "Replace currently selected ship color with the color preview");
             this.buttonReplace.UseVisualStyleBackColor = true;
             this.buttonReplace.Click += new System.EventHandler(this.buttonReplace_Click);
@@ -159,12 +168,12 @@ namespace WhipsShipRecolorTool
             // textBoxOutput
             // 
             this.textBoxOutput.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.textBoxOutput.Location = new System.Drawing.Point(30, 375);
+            this.textBoxOutput.Location = new System.Drawing.Point(24, 505);
             this.textBoxOutput.Multiline = true;
             this.textBoxOutput.Name = "textBoxOutput";
             this.textBoxOutput.ReadOnly = true;
             this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxOutput.Size = new System.Drawing.Size(624, 129);
+            this.textBoxOutput.Size = new System.Drawing.Size(567, 129);
             this.textBoxOutput.TabIndex = 10;
             this.textBoxOutput.UseWaitCursor = true;
             // 
@@ -172,28 +181,18 @@ namespace WhipsShipRecolorTool
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(25, 347);
+            this.label3.Location = new System.Drawing.Point(21, 477);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(161, 25);
             this.label3.TabIndex = 11;
             this.label3.Text = "Debug Console";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(27, 86);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(114, 17);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "Ship Color List";
             // 
             // buttonSave
             // 
             this.buttonSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonSave.Enabled = false;
             this.buttonSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSave.Location = new System.Drawing.Point(267, 298);
+            this.buttonSave.Location = new System.Drawing.Point(329, 422);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(203, 59);
             this.buttonSave.TabIndex = 13;
@@ -288,9 +287,9 @@ namespace WhipsShipRecolorTool
             this.groupBoxHSV.Controls.Add(this.numericUpDownSaturation);
             this.groupBoxHSV.Enabled = false;
             this.groupBoxHSV.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxHSV.Location = new System.Drawing.Point(477, 106);
+            this.groupBoxHSV.Location = new System.Drawing.Point(399, 231);
             this.groupBoxHSV.Name = "groupBoxHSV";
-            this.groupBoxHSV.Size = new System.Drawing.Size(190, 161);
+            this.groupBoxHSV.Size = new System.Drawing.Size(190, 167);
             this.groupBoxHSV.TabIndex = 23;
             this.groupBoxHSV.TabStop = false;
             this.groupBoxHSV.Text = "HSV Input";
@@ -310,7 +309,8 @@ namespace WhipsShipRecolorTool
             this.checkBoxShowRGB.AutoSize = true;
             this.checkBoxShowRGB.Cursor = System.Windows.Forms.Cursors.Hand;
             this.checkBoxShowRGB.Enabled = false;
-            this.checkBoxShowRGB.Location = new System.Drawing.Point(30, 276);
+            this.checkBoxShowRGB.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxShowRGB.Location = new System.Drawing.Point(12, 191);
             this.checkBoxShowRGB.Name = "checkBoxShowRGB";
             this.checkBoxShowRGB.Size = new System.Drawing.Size(145, 21);
             this.checkBoxShowRGB.TabIndex = 25;
@@ -323,7 +323,7 @@ namespace WhipsShipRecolorTool
             // 
             this.buttonAddColor.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonAddColor.Enabled = false;
-            this.buttonAddColor.Location = new System.Drawing.Point(368, 181);
+            this.buttonAddColor.Location = new System.Drawing.Point(287, 296);
             this.buttonAddColor.Name = "buttonAddColor";
             this.buttonAddColor.Size = new System.Drawing.Size(102, 49);
             this.buttonAddColor.TabIndex = 26;
@@ -341,7 +341,8 @@ namespace WhipsShipRecolorTool
             // 
             this.checkBoxVisualUpdate.AutoSize = true;
             this.checkBoxVisualUpdate.Enabled = false;
-            this.checkBoxVisualUpdate.Location = new System.Drawing.Point(30, 298);
+            this.checkBoxVisualUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxVisualUpdate.Location = new System.Drawing.Point(11, 218);
             this.checkBoxVisualUpdate.Name = "checkBoxVisualUpdate";
             this.checkBoxVisualUpdate.Size = new System.Drawing.Size(221, 21);
             this.checkBoxVisualUpdate.TabIndex = 27;
@@ -351,38 +352,125 @@ namespace WhipsShipRecolorTool
             this.checkBoxVisualUpdate.UseVisualStyleBackColor = true;
             this.checkBoxVisualUpdate.CheckedChanged += new System.EventHandler(this.checkBoxVisualUpdate_CheckedChanged);
             // 
+            // pictureBoxNewColorPreview
+            // 
+            this.pictureBoxNewColorPreview.BackColor = System.Drawing.Color.Black;
+            this.pictureBoxNewColorPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBoxNewColorPreview.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBoxNewColorPreview.Enabled = false;
+            this.pictureBoxNewColorPreview.Location = new System.Drawing.Point(486, 107);
+            this.pictureBoxNewColorPreview.Name = "pictureBoxNewColorPreview";
+            this.pictureBoxNewColorPreview.Size = new System.Drawing.Size(106, 104);
+            this.pictureBoxNewColorPreview.TabIndex = 28;
+            this.pictureBoxNewColorPreview.TabStop = false;
+            this.pictureBoxNewColorPreview.Click += new System.EventHandler(this.pictureBoxColorPreview_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(483, 87);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(81, 17);
+            this.label8.TabIndex = 29;
+            this.label8.Text = "New Color";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(399, 115);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(80, 69);
+            this.label9.TabIndex = 30;
+            this.label9.Text = "⬅";
+            // 
+            // groupBoxMisc
+            // 
+            this.groupBoxMisc.Controls.Add(this.checkBoxRepair);
+            this.groupBoxMisc.Controls.Add(this.checkBoxBuild);
+            this.groupBoxMisc.Enabled = false;
+            this.groupBoxMisc.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxMisc.Location = new System.Drawing.Point(26, 340);
+            this.groupBoxMisc.Name = "groupBoxMisc";
+            this.groupBoxMisc.Size = new System.Drawing.Size(241, 79);
+            this.groupBoxMisc.TabIndex = 33;
+            this.groupBoxMisc.TabStop = false;
+            this.groupBoxMisc.Text = "Misc. Functions";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkBoxVisualUpdate);
+            this.groupBox2.Controls.Add(this.checkBoxShowRGB);
+            this.groupBox2.Controls.Add(this.listBoxColors);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.Location = new System.Drawing.Point(29, 87);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(238, 247);
+            this.groupBox2.TabIndex = 34;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Ship Colors";
+            // 
+            // checkBoxRepair
+            // 
+            this.checkBoxRepair.AutoSize = true;
+            this.checkBoxRepair.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxRepair.Location = new System.Drawing.Point(12, 21);
+            this.checkBoxRepair.Name = "checkBoxRepair";
+            this.checkBoxRepair.Size = new System.Drawing.Size(136, 21);
+            this.checkBoxRepair.TabIndex = 35;
+            this.checkBoxRepair.Text = "Repair All Blocks";
+            this.checkBoxRepair.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxBuild
+            // 
+            this.checkBoxBuild.AutoSize = true;
+            this.checkBoxBuild.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxBuild.Location = new System.Drawing.Point(12, 48);
+            this.checkBoxBuild.Name = "checkBoxBuild";
+            this.checkBoxBuild.Size = new System.Drawing.Size(125, 21);
+            this.checkBoxBuild.TabIndex = 36;
+            this.checkBoxBuild.Text = "Build All Blocks";
+            this.checkBoxBuild.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(679, 516);
-            this.Controls.Add(this.checkBoxVisualUpdate);
+            this.ClientSize = new System.Drawing.Size(620, 654);
+            this.Controls.Add(this.groupBoxMisc);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.pictureBoxNewColorPreview);
             this.Controls.Add(this.buttonAddColor);
-            this.Controls.Add(this.checkBoxShowRGB);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.buttonSave);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxOutput);
             this.Controls.Add(this.buttonReplace);
             this.Controls.Add(this.buttonPickColor);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.pictureBoxColorPreview);
-            this.Controls.Add(this.listBoxColors);
+            this.Controls.Add(this.pictureBoxOldColorPreview);
             this.Controls.Add(this.buttonBrowse);
             this.Controls.Add(this.textBoxFilePath);
             this.Controls.Add(this.groupBoxHSV);
+            this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Whip\'s Ship Recolor Tool";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxColorPreview)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOldColorPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSaturation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHue)).EndInit();
             this.groupBoxHSV.ResumeLayout(false);
             this.groupBoxHSV.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxNewColorPreview)).EndInit();
+            this.groupBoxMisc.ResumeLayout(false);
+            this.groupBoxMisc.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -394,14 +482,13 @@ namespace WhipsShipRecolorTool
         private System.Windows.Forms.TextBox textBoxFilePath;
         private System.Windows.Forms.Button buttonBrowse;
         private System.Windows.Forms.ListBox listBoxColors;
-        private System.Windows.Forms.PictureBox pictureBoxColorPreview;
+        private System.Windows.Forms.PictureBox pictureBoxOldColorPreview;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonPickColor;
         private System.Windows.Forms.Button buttonReplace;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.TextBox textBoxOutput;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonUpdateHSV;
         private System.Windows.Forms.NumericUpDown numericUpDownValue;
@@ -417,6 +504,13 @@ namespace WhipsShipRecolorTool
         private System.Windows.Forms.ToolTip toolTip1;
         private System.ComponentModel.BackgroundWorker backgroundWorkerUpdate;
         private System.Windows.Forms.CheckBox checkBoxVisualUpdate;
+        private System.Windows.Forms.PictureBox pictureBoxNewColorPreview;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox groupBoxMisc;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox checkBoxRepair;
+        private System.Windows.Forms.CheckBox checkBoxBuild;
     }
 }
 
