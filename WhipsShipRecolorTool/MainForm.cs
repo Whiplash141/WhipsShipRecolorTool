@@ -18,7 +18,7 @@ namespace WhipsShipRecolorTool
     public partial class MainForm : Form
     {
         //make new string called offsetText to switch to instead of doing conversions
-        const string myVersionString = "1.0.0.0";
+        const string myVersionString = "1.0.0.1";
         const string buildDateString = "3/12/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
@@ -37,6 +37,7 @@ namespace WhipsShipRecolorTool
         const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)y=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)z=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)/>";
         const string damagePattern = "<IntegrityPercent>.*</IntegrityPercent>";
         const string buildPattern = "<BuildPercent>.*</BuildPercent>";
+        const string skeletonPattern = "<Skeleton>(.|\n)*</Skeleton>";
 
         HashSet<string> uniqueStrings = new HashSet<string>();
 
@@ -786,6 +787,8 @@ namespace WhipsShipRecolorTool
         {
             textBoxOutput.AppendText("\n\r-----------------------------------------\r\n");
             textBoxOutput.AppendText("Repairing blocks\n\r");
+
+            textBoxOutput.AppendText("Changing integrity ratio...\n\r");
             var matches = Regex.Matches(text, damagePattern);
             textBoxOutput.AppendText($"Regex matches: {matches.Count}\n\r");
 
@@ -799,6 +802,22 @@ namespace WhipsShipRecolorTool
             foreach (var thisString in uniqueStrings)
             {
                 text = text.Replace(thisString, "<IntegrityPercent>1</IntegrityPercent>");
+            }
+
+            textBoxOutput.AppendText("Removing deformation bone info...\n\r");
+            matches = Regex.Matches(text, skeletonPattern);
+            textBoxOutput.AppendText($"Regex matches: {matches.Count}\n\r");
+
+            uniqueStrings.Clear();
+            foreach (var match in matches)
+            {
+                var matchString = match.ToString();
+                uniqueStrings.Add(matchString);
+            }
+
+            foreach (var thisString in uniqueStrings)
+            {
+                text = text.Replace(thisString, "");
             }
         }
 
