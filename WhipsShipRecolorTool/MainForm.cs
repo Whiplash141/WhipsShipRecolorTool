@@ -18,8 +18,8 @@ namespace WhipsShipRecolorTool
     public partial class MainForm : Form
     {
         //make new string called offsetText to switch to instead of doing conversions
-        const string myVersionString = "1.0.0.3";
-        const string buildDateString = "3/12/18";
+        const string myVersionString = "1.0.1.0";
+        const string buildDateString = "7/19/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
         string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
@@ -97,41 +97,47 @@ namespace WhipsShipRecolorTool
 
         void CheckForUpdates()
         {
-            var webRequest = (HttpWebRequest)WebRequest.Create(githubVersionUrl);
-            webRequest.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
-            webRequest.AllowAutoRedirect = true;
-
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-
-
-            var webResponse = (HttpWebResponse)webRequest.GetResponse();
-
-            var latestVersionUrl = webResponse.ResponseUri.ToString();
-            var urlSplit = latestVersionUrl.Split('/');
-            if (urlSplit.Length < 1)
-                return;
-
-            var latestVersionString = urlSplit[urlSplit.Length - 1];
-            latestVersionString = latestVersionString.ToUpperInvariant().Replace("V", "");
-
-            Version latestVersion = new Version();
-            if (!Version.TryParse(latestVersionString, out latestVersion))
-                return;
-
-            Version myVersion = new Version();
-            if (!Version.TryParse(myVersionString, out myVersion))
-                return;
-
-            if (latestVersion > myVersion)
+            try
             {
-                var confirmResult = MessageBox.Show($"Old version detected. Update to newest version?\nYour version: {myVersionString}\nLatest release: {latestVersionString}",
-                    "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-                if (confirmResult == DialogResult.Yes)
+                var webRequest = (HttpWebRequest)WebRequest.Create(githubVersionUrl);
+                webRequest.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+                webRequest.AllowAutoRedirect = true;
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+
+                var webResponse = (HttpWebResponse)webRequest.GetResponse();
+
+                var latestVersionUrl = webResponse.ResponseUri.ToString();
+                var urlSplit = latestVersionUrl.Split('/');
+                if (urlSplit.Length < 1)
+                    return;
+
+                var latestVersionString = urlSplit[urlSplit.Length - 1];
+                latestVersionString = latestVersionString.ToUpperInvariant().Replace("V", "");
+
+                Version latestVersion = new Version();
+                if (!Version.TryParse(latestVersionString, out latestVersion))
+                    return;
+
+                Version myVersion = new Version();
+                if (!Version.TryParse(myVersionString, out myVersion))
+                    return;
+
+                if (latestVersion > myVersion)
                 {
-                    System.Diagnostics.Process.Start(githubVersionUrl);
-                    closeForm = true;
-                    //this.Close();
+                    var confirmResult = MessageBox.Show($"Old version detected. Update to newest version?\nYour version: {myVersionString}\nLatest release: {latestVersionString}",
+                        "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        System.Diagnostics.Process.Start(githubVersionUrl);
+                        closeForm = true;
+                        //this.Close();
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception in update check\n {e.StackTrace}");
             }
         }
         #endregion
@@ -434,7 +440,6 @@ namespace WhipsShipRecolorTool
             CreateColorOffsets();
         }
 
-        
         string RoundColors(string text, string maskPattern)
         {
             var matches = Regex.Matches(text, maskPattern);
@@ -636,12 +641,19 @@ namespace WhipsShipRecolorTool
             File.WriteAllText(filepath, text);
             textBoxOutput.AppendText("Changes saved\r\n");
 
-            //Delete sbcPB file
+            //Delete binary files
             var precompiledSbcPath = filepath + "PB";
             if (File.Exists(precompiledSbcPath))
             {
                 File.Delete(precompiledSbcPath);
-                textBoxOutput.AppendText("bp.sbcPB deleted\r\n");
+                textBoxOutput.AppendText("Binary file bp.sbcPB deleted\r\n");
+            }
+
+            var precompiledSbcPath2 = filepath + "B1";
+            if (File.Exists(precompiledSbcPath2))
+            {
+                File.Delete(precompiledSbcPath2);
+                textBoxOutput.AppendText("Binary file bp.sbcB1 deleted\r\n");
             }
         }
 
