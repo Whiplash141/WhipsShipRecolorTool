@@ -18,8 +18,8 @@ namespace WhipsShipRecolorTool
     public partial class MainForm : Form
     {
         //make new string called offsetText to switch to instead of doing conversions
-        const string myVersionString = "1.0.1.1";
-        const string buildDateString = "8/26/18";
+        const string myVersionString = "1.1.0.0";
+        const string buildDateString = "9/2/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
         string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
@@ -27,13 +27,12 @@ namespace WhipsShipRecolorTool
         string filepath = "";
         string originalText = "";
         string text = "";
-        string maskToReplace = "";
+        string[] maskToReplace = new string[] { "" };
         string offsetText = "";
         string notOffsetText = "";
 
         const string fileExtension = ".sbc";
         const string fileExtensionBackup = "_backup.sbc";
-        //const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*.?[0-9]*?\"( *?)y=\"-?[0-9]*.?[0-9]*?\"( *?)z=\"-?[0-9]*.?[0-9]*?\"( *?)/>";
         const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)y=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)z=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)/>";
         const string damagePattern = "<IntegrityPercent>.*?</IntegrityPercent>";
         const string buildPattern = "<BuildPercent>.*?</BuildPercent>";
@@ -45,7 +44,7 @@ namespace WhipsShipRecolorTool
 
         Dictionary<string, ColorVector> uniqueColors = new Dictionary<string, ColorVector>();
 
-        ColorVector hsvVectorToReplace = new ColorVector(0,0,0);
+        ColorVector[] hsvVectorToReplace = new ColorVector[] { new ColorVector(0,0,0) };
 
         public MainForm()
         {
@@ -523,7 +522,10 @@ namespace WhipsShipRecolorTool
             var hsvMask = hsv.ClampHSV().HSVToColorMask().ToMaskString(); //clamps before converting to the mask
             textBoxOutput.AppendText($"mask: {hsvMask}\r\n");
 
-            text = text.Replace(maskToReplace, hsvMask);
+            for (int i = 0; i < maskToReplace.Length; i++)
+            {
+                text = text.Replace(maskToReplace[i], hsvMask);
+            }
 
             pictureBoxOldColorPreview.BackColor = replacementColor;
 
@@ -590,23 +592,30 @@ namespace WhipsShipRecolorTool
             if (index == -1)
                 return;
 
-            maskToReplace = uniqueColors.Keys.ElementAt(index);
-            hsvVectorToReplace = uniqueColors[maskToReplace];
+            maskToReplace = new string[listBoxColors.SelectedIndices.Count];
+            hsvVectorToReplace = new ColorVector[listBoxColors.SelectedIndices.Count];
 
-            var colorToReplace = hsvVectorToReplace.HSVToRGB().RGBToColor();
+            for (int i = 0; i < listBoxColors.SelectedIndices.Count; i++)
+            {
+                int selectedIndex = listBoxColors.SelectedIndices[i];
+                maskToReplace[i] = uniqueColors.Keys.ElementAt(selectedIndex);
+                hsvVectorToReplace[i] = uniqueColors[maskToReplace[i]];
+            }
+
+            var colorToReplace = hsvVectorToReplace[0].HSVToRGB().RGBToColor();
             replacementColor = colorToReplace; //default to the same to avoid issues
 
             textBoxOutput.AppendText("\r\n-----------------------------------------\r\n");
             textBoxOutput.AppendText($"Color index changed: {index}\r\n");
 
-            textBoxOutput.AppendText($"hsv {hsvVectorToReplace}\r\nrgb {hsvVectorToReplace.HSVToRGB()}\r\n");
+            textBoxOutput.AppendText($"hsv {hsvVectorToReplace}\r\nrgb {hsvVectorToReplace[0].HSVToRGB()}\r\n");
 
             pictureBoxOldColorPreview.BackColor = colorToReplace;
             pictureBoxNewColorPreview.BackColor = colorToReplace;
 
             textBoxOutput.AppendText($"color {colorToReplace}\r\n");
 
-            var clampedHsvVectorToReplace = hsvVectorToReplace.ClampHSV();
+            var clampedHsvVectorToReplace = hsvVectorToReplace[0].ClampHSV();
             numericUpDownHue.Value = (decimal)clampedHsvVectorToReplace.X;
             numericUpDownSaturation.Value = (decimal)clampedHsvVectorToReplace.Y;
             numericUpDownValue.Value = (decimal)clampedHsvVectorToReplace.Z;

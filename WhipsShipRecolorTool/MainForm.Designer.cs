@@ -102,13 +102,14 @@ namespace WhipsShipRecolorTool
             // listBoxColors
             // 
             this.listBoxColors.Cursor = System.Windows.Forms.Cursors.Default;
-            this.listBoxColors.Font = new System.Drawing.Font("Monospac821 BT", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxColors.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxColors.FormattingEnabled = true;
-            this.listBoxColors.ItemHeight = 18;
+            this.listBoxColors.ItemHeight = 17;
             this.listBoxColors.Location = new System.Drawing.Point(6, 21);
             this.listBoxColors.Name = "listBoxColors";
             this.listBoxColors.ScrollAlwaysVisible = true;
-            this.listBoxColors.Size = new System.Drawing.Size(226, 166);
+            this.listBoxColors.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listBoxColors.Size = new System.Drawing.Size(226, 157);
             this.listBoxColors.TabIndex = 3;
             this.listBoxColors.SelectedIndexChanged += new System.EventHandler(this.listBoxColors_SelectedIndexChanged);
             // 
