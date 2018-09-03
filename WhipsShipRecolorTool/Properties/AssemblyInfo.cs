@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Whip's Ship Recolor Tool")]
 [assembly: AssemblyDescription("An application for mass recoloring of Space Engineers ship blueprints")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Whiplash")]
 [assembly: AssemblyProduct("Whip's Blueprint Recolor Tool")]
 [assembly: AssemblyCopyright("Copyright Whiplash141 ©  2018")]
 [assembly: AssemblyTrademark("")]
