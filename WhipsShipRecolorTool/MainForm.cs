@@ -18,8 +18,8 @@ namespace WhipsShipRecolorTool
     public partial class MainForm : Form
     {
         //make new string called offsetText to switch to instead of doing conversions
-        const string myVersionString = "1.0.1.0";
-        const string buildDateString = "7/19/18";
+        const string myVersionString = "1.0.1.1";
+        const string buildDateString = "8/26/18";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
         string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
@@ -411,7 +411,7 @@ namespace WhipsShipRecolorTool
 
             public override string ToString()
             {
-                return $"<{X}, {Y}, {Z}>";
+                return $"[{X.ToString().PadLeft(3)}, {Y.ToString().PadLeft(3)}, {Z.ToString().PadLeft(3)}]";
             }
         }
 

@@ -56,15 +56,15 @@ namespace WhipsShipRecolorTool
             this.checkBoxShowRGB = new System.Windows.Forms.CheckBox();
             this.buttonAddColor = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.backgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
             this.checkBoxVisualUpdate = new System.Windows.Forms.CheckBox();
+            this.backgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
             this.pictureBoxNewColorPreview = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.groupBoxMisc = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBoxRepair = new System.Windows.Forms.CheckBox();
             this.checkBoxBuild = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOldColorPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSaturation)).BeginInit();
@@ -102,13 +102,13 @@ namespace WhipsShipRecolorTool
             // listBoxColors
             // 
             this.listBoxColors.Cursor = System.Windows.Forms.Cursors.Default;
-            this.listBoxColors.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxColors.Font = new System.Drawing.Font("Monospac821 BT", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxColors.FormattingEnabled = true;
-            this.listBoxColors.ItemHeight = 16;
-            this.listBoxColors.Location = new System.Drawing.Point(12, 21);
+            this.listBoxColors.ItemHeight = 18;
+            this.listBoxColors.Location = new System.Drawing.Point(6, 21);
             this.listBoxColors.Name = "listBoxColors";
             this.listBoxColors.ScrollAlwaysVisible = true;
-            this.listBoxColors.Size = new System.Drawing.Size(220, 164);
+            this.listBoxColors.Size = new System.Drawing.Size(226, 166);
             this.listBoxColors.TabIndex = 3;
             this.listBoxColors.SelectedIndexChanged += new System.EventHandler(this.listBoxColors_SelectedIndexChanged);
             // 
@@ -167,7 +167,7 @@ namespace WhipsShipRecolorTool
             // 
             // textBoxOutput
             // 
-            this.textBoxOutput.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.textBoxOutput.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.textBoxOutput.Location = new System.Drawing.Point(24, 505);
             this.textBoxOutput.Multiline = true;
             this.textBoxOutput.Name = "textBoxOutput";
@@ -175,7 +175,6 @@ namespace WhipsShipRecolorTool
             this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxOutput.Size = new System.Drawing.Size(567, 129);
             this.textBoxOutput.TabIndex = 10;
-            this.textBoxOutput.UseWaitCursor = true;
             // 
             // label3
             // 
@@ -310,7 +309,7 @@ namespace WhipsShipRecolorTool
             this.checkBoxShowRGB.Cursor = System.Windows.Forms.Cursors.Hand;
             this.checkBoxShowRGB.Enabled = false;
             this.checkBoxShowRGB.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxShowRGB.Location = new System.Drawing.Point(12, 191);
+            this.checkBoxShowRGB.Location = new System.Drawing.Point(6, 191);
             this.checkBoxShowRGB.Name = "checkBoxShowRGB";
             this.checkBoxShowRGB.Size = new System.Drawing.Size(145, 21);
             this.checkBoxShowRGB.TabIndex = 25;
@@ -332,17 +331,12 @@ namespace WhipsShipRecolorTool
             this.buttonAddColor.UseVisualStyleBackColor = true;
             this.buttonAddColor.Click += new System.EventHandler(this.buttonAddColor_Click);
             // 
-            // backgroundWorkerUpdate
-            // 
-            this.backgroundWorkerUpdate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerUpdate_DoWork);
-            this.backgroundWorkerUpdate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerUpdate_RunWorkerCompleted);
-            // 
             // checkBoxVisualUpdate
             // 
             this.checkBoxVisualUpdate.AutoSize = true;
             this.checkBoxVisualUpdate.Enabled = false;
             this.checkBoxVisualUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxVisualUpdate.Location = new System.Drawing.Point(11, 218);
+            this.checkBoxVisualUpdate.Location = new System.Drawing.Point(6, 218);
             this.checkBoxVisualUpdate.Name = "checkBoxVisualUpdate";
             this.checkBoxVisualUpdate.Size = new System.Drawing.Size(221, 21);
             this.checkBoxVisualUpdate.TabIndex = 27;
@@ -351,6 +345,11 @@ namespace WhipsShipRecolorTool
         "1.186");
             this.checkBoxVisualUpdate.UseVisualStyleBackColor = true;
             this.checkBoxVisualUpdate.CheckedChanged += new System.EventHandler(this.checkBoxVisualUpdate_CheckedChanged);
+            // 
+            // backgroundWorkerUpdate
+            // 
+            this.backgroundWorkerUpdate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerUpdate_DoWork);
+            this.backgroundWorkerUpdate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerUpdate_RunWorkerCompleted);
             // 
             // pictureBoxNewColorPreview
             // 
@@ -398,6 +397,28 @@ namespace WhipsShipRecolorTool
             this.groupBoxMisc.TabStop = false;
             this.groupBoxMisc.Text = "Misc. Functions";
             // 
+            // checkBoxRepair
+            // 
+            this.checkBoxRepair.AutoSize = true;
+            this.checkBoxRepair.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxRepair.Location = new System.Drawing.Point(9, 21);
+            this.checkBoxRepair.Name = "checkBoxRepair";
+            this.checkBoxRepair.Size = new System.Drawing.Size(136, 21);
+            this.checkBoxRepair.TabIndex = 35;
+            this.checkBoxRepair.Text = "Repair All Blocks";
+            this.checkBoxRepair.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxBuild
+            // 
+            this.checkBoxBuild.AutoSize = true;
+            this.checkBoxBuild.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxBuild.Location = new System.Drawing.Point(9, 48);
+            this.checkBoxBuild.Name = "checkBoxBuild";
+            this.checkBoxBuild.Size = new System.Drawing.Size(125, 21);
+            this.checkBoxBuild.TabIndex = 36;
+            this.checkBoxBuild.Text = "Build All Blocks";
+            this.checkBoxBuild.UseVisualStyleBackColor = true;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.checkBoxVisualUpdate);
@@ -410,28 +431,6 @@ namespace WhipsShipRecolorTool
             this.groupBox2.TabIndex = 34;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Ship Colors";
-            // 
-            // checkBoxRepair
-            // 
-            this.checkBoxRepair.AutoSize = true;
-            this.checkBoxRepair.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxRepair.Location = new System.Drawing.Point(12, 21);
-            this.checkBoxRepair.Name = "checkBoxRepair";
-            this.checkBoxRepair.Size = new System.Drawing.Size(136, 21);
-            this.checkBoxRepair.TabIndex = 35;
-            this.checkBoxRepair.Text = "Repair All Blocks";
-            this.checkBoxRepair.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxBuild
-            // 
-            this.checkBoxBuild.AutoSize = true;
-            this.checkBoxBuild.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxBuild.Location = new System.Drawing.Point(12, 48);
-            this.checkBoxBuild.Name = "checkBoxBuild";
-            this.checkBoxBuild.Size = new System.Drawing.Size(125, 21);
-            this.checkBoxBuild.TabIndex = 36;
-            this.checkBoxBuild.Text = "Build All Blocks";
-            this.checkBoxBuild.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
