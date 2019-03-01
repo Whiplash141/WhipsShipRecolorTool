@@ -18,8 +18,8 @@ namespace WhipsShipRecolorTool
     public partial class MainForm : Form
     {
         //make new string called offsetText to switch to instead of doing conversions
-        const string myVersionString = "1.0.1.1";
-        const string buildDateString = "8/26/18";
+        const string myVersionString = "1.0.2.0";
+        const string buildDateString = "2/28/19";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
         string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
@@ -31,9 +31,10 @@ namespace WhipsShipRecolorTool
         string offsetText = "";
         string notOffsetText = "";
 
+        string[] _binaryFileExtensions = new string[] { "PB", "B1", "B2" };
+
         const string fileExtension = ".sbc";
         const string fileExtensionBackup = "_backup.sbc";
-        //const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*.?[0-9]*?\"( *?)y=\"-?[0-9]*.?[0-9]*?\"( *?)z=\"-?[0-9]*.?[0-9]*?\"( *?)/>";
         const string maskPattern = "<ColorMaskHSV( *?)x=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)y=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)z=\"-?[0-9]*?.?[0-9]*?[Ee]?[+-]?[0-9]*?\"( *?)/>";
         const string damagePattern = "<IntegrityPercent>.*?</IntegrityPercent>";
         const string buildPattern = "<BuildPercent>.*?</BuildPercent>";
@@ -641,19 +642,14 @@ namespace WhipsShipRecolorTool
             File.WriteAllText(filepath, text);
             textBoxOutput.AppendText("Changes saved\r\n");
 
-            //Delete binary files
-            var precompiledSbcPath = filepath + "PB";
-            if (File.Exists(precompiledSbcPath))
+            foreach (string extension in _binaryFileExtensions)
             {
-                File.Delete(precompiledSbcPath);
-                textBoxOutput.AppendText("Binary file bp.sbcPB deleted\r\n");
-            }
-
-            var precompiledSbcPath2 = filepath + "B1";
-            if (File.Exists(precompiledSbcPath2))
-            {
-                File.Delete(precompiledSbcPath2);
-                textBoxOutput.AppendText("Binary file bp.sbcB1 deleted\r\n");
+                string binaryFileName = $"{filepath}{extension}";
+                if (File.Exists(binaryFileName))
+                {
+                    File.Delete(binaryFileName);
+                    textBoxOutput.AppendText($"Binary file {binaryFileName} deleted\r\n");
+                }
             }
         }
 
