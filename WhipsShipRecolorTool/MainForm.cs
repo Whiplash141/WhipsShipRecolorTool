@@ -12,14 +12,15 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Globalization;
+using System.Drawing.Drawing2D;
 
 namespace WhipsShipRecolorTool
 {
     public partial class MainForm : Form
     {
         //make new string called offsetText to switch to instead of doing conversions
-        const string myVersionString = "1.0.2.0";
-        const string buildDateString = "2/28/19";
+        const string myVersionString = "1.0.3.0";
+        const string buildDateString = "4/18/19";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
         string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
@@ -31,7 +32,7 @@ namespace WhipsShipRecolorTool
         string offsetText = "";
         string notOffsetText = "";
 
-        string[] _binaryFileExtensions = new string[] { "PB", "B1", "B2" };
+        string[] _binaryFileExtensions = new string[] { "PB", "B1", "B2", "B3" };
 
         const string fileExtension = ".sbc";
         const string fileExtensionBackup = "_backup.sbc";
@@ -72,6 +73,21 @@ namespace WhipsShipRecolorTool
 
             //Check for any new updates
             StartUpdateBackgroundWorker();
+
+            this.Paint += OnMainFormPaint;
+        }
+
+        /// <summary>
+        /// Colors main form with a gradient.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnMainFormPaint(object sender, PaintEventArgs e)
+        {
+            Graphics graphics = e.Graphics;
+            Rectangle gradient_rectangle = new Rectangle(0, 0, this.Width, this.Height);
+            Brush b = new LinearGradientBrush(gradient_rectangle, Color.FromArgb(0, 0, 0), Color.FromArgb(80, 0, 0), 45f);
+            graphics.FillRectangle(b, gradient_rectangle);
         }
 
         #region Update Checking
