@@ -19,8 +19,8 @@ namespace WhipsShipRecolorTool
     public partial class MainForm : Form
     {
         //make new string called offsetText to switch to instead of doing conversions
-        const string myVersionString = "1.0.3.0";
-        const string buildDateString = "4/18/19";
+        const string myVersionString = "1.0.4.0";
+        const string buildDateString = "8/22/19";
         const string githubVersionUrl = "https://github.com/Whiplash141/WhipsShipRecolorTool/releases/latest";
 
         string formTitle = $"Whip's Ship Recolor Tool (Version {myVersionString} - {buildDateString})";
@@ -32,7 +32,7 @@ namespace WhipsShipRecolorTool
         string offsetText = "";
         string notOffsetText = "";
 
-        string[] _binaryFileExtensions = new string[] { "PB", "B1", "B2", "B3" };
+        string[] _binaryFileExtensions = new string[] { "PB", "B1", "B2", "B3", "B4", "B5" };
 
         const string fileExtension = ".sbc";
         const string fileExtensionBackup = "_backup.sbc";
